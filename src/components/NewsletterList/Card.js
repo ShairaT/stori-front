@@ -2,7 +2,7 @@ import React from "react";
 import "tailwindcss/tailwind.css";
 import cx from "classnames";
 
-function Card() {
+function Card({newsletter}) {
   return (
     <div className="justify-center items-center flex px-5">
       <div className="bg-white flex flex-col h-full  md:justify-start md:flex-row p-[22px] gap-[15px] sm:gap-[30px] md:gap-[50px] lg:gap-[30px] w-full max-w-[1200px] ">
@@ -10,23 +10,21 @@ function Card() {
           <img
             alt=""
             className=" w-[387px] h-[300px] object-cover"
-            //src={event?.featuredImage?.url + "?auto=format&q=40"}
+            src={newsletter?.image_url_path}
           />
         </div>
 
         <div className="flex flex-col w-full  md:max-w-[700px] justify-between text-start items-center md:text-start  md:items-start">
           <div>
             <h2 className=" font-normal text-4xl lg:pt-[5px]">
-              RFK Community Alliance Open
+              {newsletter?.title}
             </h2>
 
             <div className="flex flex-col">
               <p className="font-bold mt-3 text-xl">May, 2023</p>
 
               <p className="font-normal text-xl pt-[15px] lg:pt-[25px] max-w-[590px]">
-                Join us on May 16, 2023 for our 19th annual golf tournament at
-                beautiful Sterling National Country Club in Sterling, MA. It's a
-                great day of golf for a great cause.
+                {newsletter?.description}
               </p>
             </div>
           </div>
@@ -38,7 +36,7 @@ function Card() {
             >
               <div className="flex items-center">
                 <span className="text-lg  transition-all duration-300 text-[#4AC1E0] group-hover:text-white  font-bold ">
-                  Ultimo boletin
+                  Último boletin
                 </span>
                 <span className="text-lg mt-1 ml-2 transition-all duration-300 leading-[25.2px] group-hover:text-white text-[#4AC1E0] font-bold ">
                   ⭢
