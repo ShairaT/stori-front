@@ -13,11 +13,15 @@ Este repositorio contiene una aplicación en javascript desarrollada con React. 
 ```bash
 git clone https://github.com/ShairaT/stori-front
 ```
-2. Construir la imagen de Docker
+2. Instalar dependencias
 ```bash
-docker build -t react-docker .
+npm run install
 ```
-3. Ejecutar el contenedor Docker
+3. Ejecutar
 ```bash
-docker run --rm -it -p 3000:3000 react-docker
+npm run start
 ```
+
+## Usuario Admin
+email: ayelenmaite2000@gmail.com
+contraseña: Aye1234

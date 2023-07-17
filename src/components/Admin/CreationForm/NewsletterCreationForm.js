@@ -3,7 +3,6 @@ import cx from "classnames";
 import { createNewsletters } from "../../../api";
 import { ReactMultiEmail, isEmail } from "react-multi-email";
 import 'react-multi-email/dist/style.css';
-import { useNavigate } from "react-router-dom";
 
 const NewsletterCreationForm = ({ data = {} }) => {
   const [formData, setFormData] = useState({

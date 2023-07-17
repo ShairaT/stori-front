@@ -23,7 +23,7 @@ const Login = () => {
     try {
       const response = await login(formData);
       if (response.status === 200) {
-        navigate("/admin", {});
+        navigate("/admin");
       }
     } catch (error) {
       setSubmitState(0);
