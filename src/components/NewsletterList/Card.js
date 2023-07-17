@@ -1,8 +1,29 @@
-import React from "react";
+import React, { useState } from "react";
 import "tailwindcss/tailwind.css";
 import cx from "classnames";
+import { subscribeEmail } from "../../api";
 
 function Card({newsletter}) {
+  const [email, setEmail] = useState("")
+  const [errorSubscribe, setErrorSubscribe] = useState("");
+
+  const handleSubscribeEmail = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await subscribeEmail(newsletter.uuid, email);
+      if (response.status === 204) {
+        setErrorSubscribe("El email ya está suscrito");
+      } else {
+        alert("Email subscripto con éxito");
+      }
+    } catch (error) {
+      console.log(error);
+      setErrorSubscribe(
+        "Error al suscribir el email. Por favor, inténtelo de nuevo."
+      );
+    }
+  };
+
   return (
     <div className="justify-center items-center flex px-5">
       <div className="bg-white flex flex-col h-full  md:justify-start md:flex-row p-[22px] gap-[15px] sm:gap-[30px] md:gap-[50px] lg:gap-[30px] w-full max-w-[1200px] ">
@@ -21,7 +42,7 @@ function Card({newsletter}) {
             </h2>
 
             <div className="flex flex-col">
-              <p className="font-bold mt-3 text-xl">May, 2023</p>
+              <p className="font-bold mt-3 text-xl">Autor: {newsletter.author}</p>
 
               <p className="font-normal text-xl pt-[15px] lg:pt-[25px] max-w-[590px]">
                 {newsletter?.description}
@@ -29,30 +50,15 @@ function Card({newsletter}) {
             </div>
           </div>
           <div className="flex flex-col flex-wrap sm:flex-row  w-full justify-between sm:items-end">
-            <button
-              className="relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] "
-              target="_self"
-              href={"/"}
-            >
-              <div className="flex items-center">
-                <span className="text-lg  transition-all duration-300 text-[#4AC1E0] group-hover:text-white  font-bold ">
-                  Último boletin
-                </span>
-                <span className="text-lg mt-1 ml-2 transition-all duration-300 leading-[25.2px] group-hover:text-white text-[#4AC1E0] font-bold ">
-                  ⭢
-                </span>
-              </div>
-            </button>
-            <form className="flex items-end flex-wrap gap-3">
+            <form className="flex items-end flex-wrap gap-3" onSubmit={handleSubscribeEmail}>
               <input
+                type="email"
                 className={cx(
                   "border border-lightBlue h-[41px] rounded-full  px-[20px]  !focus:border-lightBlue ",
                   "text-[18px]  text-[#4AC1E0] border-lightBlue"
                 )}
-                // onChange={(e) =>
-                //   setFormData({ ...formData, email: e.target?.value })
-                // }
-                // required
+                placeholder="email"
+                onChange={(e) => setEmail(e.target?.value)}
               />
               <button
                 className="relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] "
@@ -67,6 +73,11 @@ function Card({newsletter}) {
                   </span>
                 </div>
               </button>
+              {!!errorSubscribe && (
+                <p className="text-[16px] leading-[25px] text-[#f47777] mt-[12px]">
+                  {errorSubscribe}
+                </p>
+              )}
             </form>
           </div>
         </div>

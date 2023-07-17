@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from "react";
 import "tailwindcss/tailwind.css";
-import cx from "classnames";
 import Card from "./Card";
-import AdminCard from "./AdminCard";
+import AdminCard from "../Admin/AdminCard/AdminCard";
 import { fetchNewsletters } from "../../api";
 
 // const newsletterData = { title: "Title", description: "some description", imageUrl: "https://firebasestorage.googleapis.com/v0/b/stori-7daed.appspot.com/o/articles%2F5b7e5e9e-5768-4a90-a26e-fee3a6e1705e?alt=media"}
 
-function NewsletterList() {
+function NewsletterList({page}) {
   const [newsletters, setNewsletters] = useState([]);
 
   useEffect(() => {
@@ -31,7 +30,13 @@ function NewsletterList() {
       </div>
       <div className="flex flex-col gap-5">
       {newsletters.map((newsletter) => (
-          <Card key={newsletter.uuid} newsletter={newsletter} />
+          <React.Fragment key={newsletter.uuid}>
+          {page === "admin" ? (
+            <AdminCard newsletter={newsletter} />
+          ) : (
+            <Card newsletter={newsletter} />
+          )}
+        </React.Fragment>
         ))}
       </div>
     </section>

@@ -40,3 +40,13 @@
     transform: rotate(360deg);
   }
 }
+
+.success-alert {
+  background-color: #4CAF50;
+  color: white;
+}
+
+.error-alert {
+  background-color: #f44336;
+  color: white;
+}

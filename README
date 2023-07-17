@@ -1,0 +1,23 @@
+# Story frontend newsletter app
+
+Este repositorio contiene una aplicación en javascript desarrollada con React. La aplicación utiliza un Dockerfile para facilitar el despliegue y la ejecución en contenedores Docker.
+
+## Requisitos
+
+- Docker: Asegúrate de tener Docker instalado en tu máquina.
+
+## Instrucciones de Uso
+
+1. Clonar el repositorio
+
+```bash
+git clone https://github.com/ShairaT/stori-front
+```
+2. Construir la imagen de Docker
+```bash
+docker build -t react-docker .
+```
+3. Ejecutar el contenedor Docker
+```bash
+docker run --rm -it -p 3000:3000 react-docker
+```

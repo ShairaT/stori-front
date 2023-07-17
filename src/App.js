@@ -1,25 +1,24 @@
-import logo from "./logo.svg";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, Switch } from "react-router-dom";
 import "./App.css";
-import Card from "./components/NewsletterList/Card";
 import NewsletterList from "./components/NewsletterList";
 import Admin from "./components/Admin";
 import Login from "./components/Login";
+import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
+import { useState } from "react";
 
 function App() {
+  const [userData, setUserData] = useState(localStorage.getItem("userData") || null);
+
+  // Verificar si el usuario está autenticado
+
   return (
-    <div className="App">
+    <div className='App'>
       <Routes>
-        <Route path="" element={<Login />} />
-        <Route path="login" element={<Login />} />
-        <Route
-          path="admin"
-          element={
-            <div className="bg-lightBlue">
-              <Admin />
-            </div>
-          }
-        />
+        <Route path='' element={<NewsletterList page='' />} />
+        <Route path='login' element={<Login />} />
+        <Route element={<ProtectedRoute isAuthenticated={userData}/>}>
+          <Route path='admin' element={<Admin />} />
+        </Route>
       </Routes>
     </div>
   );

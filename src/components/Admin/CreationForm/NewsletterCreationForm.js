@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import cx from "classnames";
-import { createNewsletters } from "../../api";
+import { createNewsletters } from "../../../api";
 import { ReactMultiEmail, isEmail } from "react-multi-email";
 import 'react-multi-email/dist/style.css';
+import { useNavigate } from "react-router-dom";
 
 const NewsletterCreationForm = ({ data = {} }) => {
   const [formData, setFormData] = useState({
@@ -27,7 +28,7 @@ const NewsletterCreationForm = ({ data = {} }) => {
       console.log(response.status);
       if (response.status === 201) {
         setSubmitState(2);
-        // Realizar alguna acción después de crear el newsletter exitosamente
+        window.location.reload();
       }
     } catch (error) {
       setSubmitState(0);
@@ -37,11 +38,11 @@ const NewsletterCreationForm = ({ data = {} }) => {
 
   const submitButtonText = () => {
     if (submitState === 1) {
-      return "Submitting...";
+      return "Creando...";
     } else if (submitState === 2) {
-      return "Submitted!";
+      return "Creado!";
     } else {
-      return "Submit ⭢";
+      return "Crear Newsletter ⭢";
     }
   };
 
