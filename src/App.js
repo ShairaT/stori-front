@@ -5,6 +5,7 @@ import Admin from "./components/Admin";
 import Login from "./components/Login";
 import ProtectedRoute from "./components/protectedRoute/ProtectedRoute";
 import { useState } from "react";
+import NotFound from "./components/NotFound/NotFound"
 
 function App() {
   const [userData, setUserData] = useState(localStorage.getItem("userData") || null);
@@ -19,6 +20,7 @@ function App() {
         <Route element={<ProtectedRoute isAuthenticated={userData}/>}>
           <Route path='admin' element={<Admin />} />
         </Route>
+        <Route path="*" element={<NotFound />} />
       </Routes>
     </div>
   );

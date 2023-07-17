@@ -14,6 +14,7 @@ function Card({newsletter}) {
       if (response.status === 204) {
         setErrorSubscribe("El email ya está suscrito");
       } else {
+        setErrorSubscribe("");
         alert("Email subscripto con éxito");
       }
     } catch (error) {
