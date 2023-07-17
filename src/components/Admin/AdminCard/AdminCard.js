@@ -29,22 +29,14 @@ function AdminCard({ newsletter }) {
     inputFileRef.current.click();
   };
 
-  const submitButtonText = () => {
-    if (submitState === 1) {
-      return "Creando...";
-    } else if (submitState === 2) {
-      return "Creado!";
-    } else {
-      return "Crear Newsletter ⭢";
-    }
-  };
-
   const sendArticleForm = async (e) => {
     e.preventDefault();
+    setSubmitState(1)
     try {
       const response = await createArticle(formDataArticle);
       if (response.status === 201) {
         await sendArticle(response.data.article_id);
+        setSubmitState(0)
         alert("Envío exitoso");
       }
     } catch (error) {
@@ -58,6 +50,7 @@ function AdminCard({ newsletter }) {
       if (response.status === 204) {
         setErrorSubscribe("El email ya está suscrito");
       } else {
+        setErrorSubscribe("");
         alert("Email subscripto con éxito");
       }
     } catch (error) {
@@ -69,38 +62,37 @@ function AdminCard({ newsletter }) {
   };
 
   return (
-    <div className="justify-center items-center flex px-5">
-      <div className="bg-white flex flex-col h-full  md:justify-start md:flex-row p-[22px] gap-[15px] sm:gap-[30px] md:gap-[50px] lg:gap-[30px] w-full max-w-[1200px] ">
-        <div className="flex justify-center">
+    <div className='justify-center items-center flex px-5'>
+      <div className='bg-white flex flex-col h-full  md:justify-start md:flex-row p-[22px] gap-[15px] sm:gap-[30px] md:gap-[50px] lg:gap-[30px] w-full max-w-[1200px] '>
+        <div className='flex justify-center'>
           <img
-            alt=""
-            className="w-[387px] h-[300px] object-cover"
+            alt=''
+            className='w-[387px] h-[300px] object-cover'
             src={newsletter.image_url_path}
           />
         </div>
 
-        <div className="flex flex-col w-full  md:max-w-[700px] justify-between text-start items-center md:text-start  md:items-start">
+        <div className='flex flex-col w-full  md:max-w-[700px] justify-between text-start items-center md:text-start  md:items-start'>
           <div>
-            <h2 className="font-normal text-4xl lg:pt-[5px]">
+            <h2 className='font-normal text-4xl lg:pt-[5px]'>
               {newsletter.title}
             </h2>
 
-            <div className="flex flex-col">
-
-              <p className="font-normal text-xl pt-[15px] lg:pt-[25px] max-w-[590px]">
+            <div className='flex flex-col'>
+              <p className='font-normal text-xl pt-[15px] lg:pt-[25px] max-w-[590px]'>
                 {newsletter.description}
               </p>
             </div>
           </div>
           <form
-            key="sendArticle"
-            className="flex items-end flex-wrap gap-3"
-            action="#"
-            method="POST"
+            key='sendArticle'
+            className='flex items-end flex-wrap gap-3'
+            action='#'
+            method='POST'
             onSubmit={sendArticleForm}
           >
             <input
-              placeholder="Asunto"
+              placeholder='Asunto'
               className={cx(
                 "border border-lightBlue h-[41px] rounded-full  px-[20px]  !focus:border-lightBlue ",
                 "text-[18px]  text-[#4AC1E0] border-lightBlue"
@@ -114,82 +106,86 @@ function AdminCard({ newsletter }) {
               className={cx(
                 "relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] ",
                 {
-                  "opacity-50 cursor-not-allowed": selectedFile, // Deshabilitar el botón si hay una imagen seleccionada
+                  "opacity-50 cursor-not-allowed": selectedFile,
                 }
               )}
-              key="btn-send-article"
-              type="button"
+              key='btn-send-article'
+              type='button'
               onClick={handleClick}
             >
               <input
                 ref={inputFileRef}
                 onChange={onFilechange}
-                type="file"
+                type='file'
                 className={`block mt-[20px] relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] hide-input`}
-                accept="image/png, .pdf"
+                accept='image/png, .pdf'
                 required
               />
               <span
-                className={cx("text-lg transition-all duration-300 group-hover:text-white font-bold ", {
-                  "text-white": selectedFile, // Cambiar el color del texto si hay una imagen seleccionada
-                })}
+                className={cx(
+                  "text-lg transition-all duration-300 group-hover:text-white font-bold ",
+                  {
+                    "text-black": selectedFile, // Cambiar el color del texto si hay una imagen seleccionada
+                  }
+                )}
               >
                 {selectedFile ? "Imagen seleccionada" : "Agregar imagen"}
               </span>
             </button>
             <button
-              className="relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] "
-              type="submit"
+              className={submitState === 0 ? "relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0]" : "relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#9bd8e8] mt-[15px] px-[15px] border-[#9bd8e8]"}
+              type='submit'
+              disabled={submitState === 1}
             >
-              <div className="flex items-center">
-                <span className="text-lg  transition-all duration-300 text-[#4AC1E0] group-hover:text-white  font-bold ">
-                  Enviar newsletter
+              <div className='flex items-center'>
+                <span className='text-lg transition-all duration-300 text-[#4AC1E0] group-hover:text-white font-bold'>
+                  {submitState === 0 ? "Enviar newsletter" : "Enviando newsletter..."}
                 </span>
-                <span className="text-lg mt-1 ml-2 transition-all duration-300 leading-[25.2px] group-hover:text-white text-[#4AC1E0] font-bold ">
+                <span className='text-lg mt-1 ml-2 transition-all duration-300 leading-[25.2px] group-hover:text-white text-bold'>
                   ⭢
                 </span>
               </div>
             </button>
             {!!error && (
-              <p className="text-[16px] leading-[25px] text-[#f47777] mt-[12px]">
+              <p className='text-[16px] leading-[25px] text-[#f47777] mt-[12px]'>
                 {error}
               </p>
             )}
           </form>
-          <div className="flex justify-center flex-col flex-wrap sm:flex-row  w-full md:justify-between sm:items-end">
+          <div className='flex justify-center flex-col flex-wrap sm:flex-row  w-full md:justify-between sm:items-end'>
             <form
-              key="subscribeEmail"
-              action="#"
-              method="POST"
-              className="flex items-end flex-wrap gap-3"
+              key='subscribeEmail'
+              action='#'
+              method='POST'
+              className='flex items-end flex-wrap gap-3'
               onSubmit={handleSubscribeEmail}
             >
               <input
-                type="email"
+                type='email'
                 className={cx(
                   "border border-lightBlue h-[41px] rounded-full  px-[20px]  !focus:border-lightBlue ",
                   "text-[18px]  text-[#4AC1E0] border-lightBlue"
                 )}
                 onChange={(e) => setEmail(e.target?.value)}
-                placeholder="Email"
+                placeholder='Email'
                 required
               />
               <button
-                className="relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] "
-                type="submit"
-                key="btn-subscribe"
+                className='relative border transition-all duration-300 py-[5px] w-max rounded-[30px] group hover:bg-[#4AC1E0] mt-[15px] px-[15px] border-[#4AC1E0] '
+                type='submit'
+                key='btn-subscribe'
               >
-                <div className="flex items-center">
-                  <span className="text-lg  transition-all duration-300 text-[#4AC1E0] group-hover:text-white  font-bold ">
-                    Suscribir usuario
+                <div className='flex items-center'>
+                  <span className='text-lg  transition-all duration-300 text-[#4AC1E0] group-hover:text-white  font-bold '>
+                    Subscribir usuario
                   </span>
-                  <span className="text-lg mt-1 ml-2 transition-all duration-300 leading-[25.2px] group-hover:text-white text-[#4AC1E0] font-bold ">
+                  <span className='text-lg mt-1 ml-2 transition-all duration-300 leading-[25.2px] group-hover:text-white text-[#4AC1E0] font-bold '>
                     ⭢
                   </span>
                 </div>
               </button>
               {!!errorSubscribe && (
-                <p className="text-[16px] leading-[25px] text-[#f47777] mt-[12px]">
+                <p className='text-[16px] leading-[25px] text-[#f47777] mt-[12px]'>
                   {errorSubscribe}
                 </p>
               )}
